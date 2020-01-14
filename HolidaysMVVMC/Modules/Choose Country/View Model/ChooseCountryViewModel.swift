@@ -53,12 +53,12 @@ final class ChooseCountryViewModel {
             guard let `self` = self else { return }
             
             switch text.isEmpty {
-            case true:
+            case false:
                 let countries = try! self.fetchedCountries.value().filter {
                     $0.name.range(of: text, options: .caseInsensitive) != nil
                 }
                 self.filteredCountries.onNext(countries)
-            case false:
+            case true:
                 self.filteredCountries.onNext(try! self.fetchedCountries.value())
             }
            

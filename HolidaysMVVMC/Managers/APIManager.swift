@@ -17,7 +17,7 @@ class APIManager {
     }()
     
     lazy var apiKey: String = {
-        return ""
+        return "PASTE YOUR API KEY HERE"
     }()
     
 }
