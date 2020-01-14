@@ -34,6 +34,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ReactiveCoordinator.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>RxAlamofire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -55,11 +60,6 @@
 			<false/>
 		</dict>
 		<key>RxSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>RxViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

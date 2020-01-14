@@ -25,7 +25,6 @@
 		1CC2C9A423CB48E40019EDCD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2C9A323CB48E40019EDCD /* AppDelegate.swift */; };
 		1CC2C9AD23CB48E60019EDCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC2C9AC23CB48E60019EDCD /* Assets.xcassets */; };
 		1CC2C9B023CB48E60019EDCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CC2C9AE23CB48E60019EDCD /* LaunchScreen.storyboard */; };
-		1CC2C9BC23CB4A670019EDCD /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2C9BB23CB4A670019EDCD /* BaseCoordinator.swift */; };
 		1CC2C9BE23CB4C210019EDCD /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2C9BD23CB4C210019EDCD /* AppCoordinator.swift */; };
 		1CC343A723CCB1B20096A544 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC343A623CCB1B20096A544 /* Extensions.swift */; };
 		1CD21CAF23CB8C8400759A4F /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD21CAE23CB8C8400759A4F /* APIManager.swift */; };
@@ -56,7 +55,6 @@
 		1CC2C9AC23CB48E60019EDCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC2C9AF23CB48E60019EDCD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1CC2C9B123CB48E60019EDCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1CC2C9BB23CB4A670019EDCD /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
 		1CC2C9BD23CB4C210019EDCD /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		1CC343A623CCB1B20096A544 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1CD21CAE23CB8C8400759A4F /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -147,8 +145,8 @@
 		1C63C7B123CC420E00D0E4C2 /* Holiday Detail */ = {
 			isa = PBXGroup;
 			children = (
-				1C63C7B223CC423800D0E4C2 /* HolidayDetailCoordinator.swift */,
-				1C63C7B323CC423800D0E4C2 /* HolidayDetailViewController.swift */,
+				1CC9C1D123CDA20100DB874E /* Coordinator */,
+				1CC9C1D223CDA20800DB874E /* View */,
 			);
 			path = "Holiday Detail";
 			sourceTree = "<group>";
@@ -189,7 +187,6 @@
 				1CD21CB223CB902100759A4F /* Models */,
 				1CD21CAC23CB8C5700759A4F /* Managers */,
 				1CD21CAD23CB8C6000759A4F /* Services */,
-				1CC2C9BA23CB4A520019EDCD /* Libraries */,
 				1CC343A523CCB1A10096A544 /* Extensions */,
 				1CC2C9B723CB4A1E0019EDCD /* Supporting Files */,
 			);
@@ -225,20 +222,28 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
-		1CC2C9BA23CB4A520019EDCD /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				1CC2C9BB23CB4A670019EDCD /* BaseCoordinator.swift */,
-			);
-			path = Libraries;
-			sourceTree = "<group>";
-		};
 		1CC343A523CCB1A10096A544 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				1CC343A623CCB1B20096A544 /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1CC9C1D123CDA20100DB874E /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				1C63C7B223CC423800D0E4C2 /* HolidayDetailCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		1CC9C1D223CDA20800DB874E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1C63C7B323CC423800D0E4C2 /* HolidayDetailViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		1CD21CAC23CB8C5700759A4F /* Managers */ = {
@@ -416,7 +421,6 @@
 				1CD21CB123CB8CDA00759A4F /* APIClient.swift in Sources */,
 				1C006F3423CC80C1004A3D4B /* CountryTableViewCell.swift in Sources */,
 				1C63C7B623CC423800D0E4C2 /* HolidayDetailViewController.swift in Sources */,
-				1CC2C9BC23CB4A670019EDCD /* BaseCoordinator.swift in Sources */,
 				1CD21CB823CB94B300759A4F /* HolidaysService.swift in Sources */,
 				1C63C7BE23CC72CC00D0E4C2 /* CountryViewModel.swift in Sources */,
 				1C2186B223CB67D800474A1F /* HolidaysViewController.swift in Sources */,

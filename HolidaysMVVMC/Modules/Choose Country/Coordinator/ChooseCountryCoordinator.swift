@@ -7,13 +7,14 @@
 //
 
 import RxSwift
+import ReactiveCoordinator
 
 enum ChooseCountryCoordinationResult {
     case country(String)
     case cancel
 }
 
-class ChooseCountryCoordinator: BaseCoordinator<ChooseCountryCoordinationResult> {
+class ChooseCountryCoordinator: ReactiveCoordinator<ChooseCountryCoordinationResult> {
     
     private let rootViewController: UIViewController
     

@@ -7,8 +7,9 @@
 //
 
 import RxSwift
+import ReactiveCoordinator
 
-class HolidayDetailCoordinator: BaseCoordinator<Void> {
+class HolidayDetailCoordinator: ReactiveCoordinator<Void> {
     
     private let rootViewController: UIViewController
     public var viewModel: HolidayViewModel!

@@ -6,6 +6,7 @@ target 'HolidaysMVVMC' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
+  pod 'ReactiveCoordinator', '4.0.0'
   
   pod 'ObjectMapper'
   pod 'Alamofire', '4.9'

@@ -7,8 +7,9 @@
 //
 
 import RxSwift
+import ReactiveCoordinator
 
-class AppCoordinator: BaseCoordinator<Void> {
+class AppCoordinator: ReactiveCoordinator<Void> {
     
     var window: UIWindow
     
