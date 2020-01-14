@@ -21,13 +21,10 @@ class ChooseCountryViewController: UIViewController {
         bindTableView()
         bindSearchBar()
         bindCloseItem()
+        bindHUD()
         
-        showProgress()
-        viewModel.fetchCountries(onSuccess: {
-            self.hideProgress()
-        }) { (error) in
-            self.hideProgress()
-            self.showMessage(error)
+        viewModel.fetchCountries { [weak self] (errorMessage) in
+            self?.showMessage(errorMessage)
         }
     }
     
@@ -55,6 +52,7 @@ class ChooseCountryViewController: UIViewController {
         let tableView = UITableView()
         tableView
             .translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(CountryTableViewCell.self, forCellReuseIdentifier: "CountryTableViewCell")
         tableView.tableFooterView = UIView()
         return tableView
     }()
@@ -64,10 +62,12 @@ class ChooseCountryViewController: UIViewController {
 extension ChooseCountryViewController {
     func bindTableView() {
         viewModel.filteredCountries
-            .bind(to: tableView.rx.items(dataSource: viewModel.dataSource))
+            .bind(to: tableView.rx.items(cellIdentifier: "CountryTableViewCell", cellType: CountryTableViewCell.self)) { (index, viewModel, cell) in
+                cell.viewModel = viewModel
+            }
             .disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(CountryItem.self)
+        tableView.rx.modelSelected(CountryViewModel.self)
             .map { $0.code }
             .bind(to: viewModel.selectedCountry)
             .disposed(by: disposeBag)
@@ -75,7 +75,7 @@ extension ChooseCountryViewController {
     
     func bindCloseItem() {
         closeItem.rx.tap
-            .bind(to: viewModel.close)
+            .bind(to: viewModel.didClose)
             .disposed(by: disposeBag)
     }
     
@@ -85,20 +85,30 @@ extension ChooseCountryViewController {
             .bind(to: viewModel.searchText)
             .disposed(by: disposeBag)
     }
+    
+    func bindHUD() {
+        viewModel.isLoading
+            .subscribe(onNext: { [weak self] isLoading in
+                isLoading ? self?.showProgress() : self?.hideProgress()
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - UI Setup
 extension ChooseCountryViewController {
     func setupUI() {
         overrideUserInterfaceStyle = .light
-        
         self.view.backgroundColor = .white
         
         self.view.addSubview(tableView)
 
-        tableView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        tableView.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        
+        tableView.widthAnchor
+            .constraint(equalTo: self.view.widthAnchor)
+            .isActive = true
+        tableView.heightAnchor
+            .constraint(equalTo: self.view.heightAnchor)
+            .isActive = true
     }
     
     func setupNavBar() {

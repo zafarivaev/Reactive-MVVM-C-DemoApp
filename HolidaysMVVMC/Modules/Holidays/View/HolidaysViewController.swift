@@ -18,6 +18,7 @@ class HolidaysViewController: UIViewController {
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
         setupNavItem()
         
@@ -26,9 +27,9 @@ class HolidaysViewController: UIViewController {
         bindHUD()
         bindVisibilityState()
         
-        viewModel.fetchHolidays(onError: { (message) in
-            self.showMessage(message)
-        })
+        viewModel.fetchHolidays{ (errorMessage) in
+            self.showMessage(errorMessage)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,7 +44,8 @@ class HolidaysViewController: UIViewController {
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.isHidden = true
-        tableView.register(HolidayTableViewCell.self, forCellReuseIdentifier: "HolidayTableViewCell")
+        tableView.register(HolidayTableViewCell.self,
+                           forCellReuseIdentifier: "HolidayTableViewCell")
         tableView.tableFooterView = UIView()
         return tableView
     }()
@@ -58,7 +60,10 @@ class HolidaysViewController: UIViewController {
     }()
     
     lazy var chooseCountryItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(title: "Choose Country", style: .plain, target: self, action: nil)
+        let item = UIBarButtonItem(title: "Choose Country",
+                                   style: .plain,
+                                   target: self,
+                                   action: nil)
         return item
     }()
     
@@ -67,11 +72,14 @@ class HolidaysViewController: UIViewController {
 // MARK: - Binding
 extension HolidaysViewController {
     func bindTableView() {
+
         viewModel.holidays
-            .bind(to: tableView.rx.items(dataSource: viewModel.dataSource))
+            .bind(to: tableView.rx.items(cellIdentifier: "HolidayTableViewCell", cellType: HolidayTableViewCell.self)) { index, viewModel, cell in
+                cell.viewModel = viewModel
+            }
             .disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(HolidayItem.self)
+        tableView.rx.modelSelected(HolidayViewModel.self)
             .bind(to: viewModel.selectedHoliday)
             .disposed(by: disposeBag)
         
@@ -83,6 +91,7 @@ extension HolidaysViewController {
     }
     
     func bindHUD() {
+        
         viewModel.isLoading
             .subscribe(onNext: { [weak self] isLoading in
                 isLoading ? self?.showProgress() : self?.hideProgress()
@@ -142,10 +151,10 @@ extension HolidaysViewController {
         chooseCountryLabel.centerYAnchor
             .constraint(equalTo: self.view.centerYAnchor)
             .isActive = true
-    
     }
     
     func setupNavItem() {
+        self.navigationItem.title = "Holidays"
         self.navigationItem.rightBarButtonItem = chooseCountryItem
     }
     

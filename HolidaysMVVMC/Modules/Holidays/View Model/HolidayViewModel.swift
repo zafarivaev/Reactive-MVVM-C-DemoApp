@@ -9,21 +9,17 @@
 import Foundation
 
 struct HolidayViewModel {
-    
     let title: String
     let date: String
     let country: String
     let isPublic: Bool
     
-    init(title: String,
-         date: String,
-         country: String,
-         isPublic: Bool) {
+    init(holiday: Holiday) {
         
-        self.title = title
-        self.date = date
-        self.country = country
-        self.isPublic = isPublic
+        self.title = holiday.name!
+        self.date = holiday.date!
+        self.country = holiday.country!
+        self.isPublic = holiday.public!
     }
     
 }

@@ -21,7 +21,11 @@ class CountryTableViewCell: UITableViewCell {
     }
     
     // MARK: - Properties
-    var viewModel: CountryViewModel!
+    var viewModel: CountryViewModel! {
+        didSet {
+            self.configure()
+        }
+    }
     
     lazy var countryNameLabel: UILabel = {
         let label = UILabel()
@@ -34,7 +38,7 @@ class CountryTableViewCell: UITableViewCell {
     
 }
 
-// MARK: - Binding
+// MARK: - Configuration
 extension CountryTableViewCell {
     func configure() {
         countryNameLabel.text = viewModel.name
@@ -47,7 +51,6 @@ extension CountryTableViewCell {
     func setupUI() {
         self.contentView.addSubview(countryNameLabel)
         
-        // Name
         countryNameLabel
             .centerXAnchor
             .constraint(equalTo: self.contentView.centerXAnchor)

@@ -12,17 +12,15 @@ class HolidaysService {
     
     static let shared = { HolidaysService() }()
     
-    func getHolidays(country: String, year: String, success: @escaping (Int, Holidays) -> (), failure: @escaping (String) -> ()) {
+    func getHolidays(country: String, success: @escaping (Int, Holidays) -> (), failure: @escaping (String) -> ()) {
         
         typealias Parameters = [String : Any]
         
         let parameters: Parameters = ["country": country,
-                                      "year": year]
+                                      "year": "2019"]
         
         APIClient.shared.get(urlString: API_GET_HOLIDAYS, parameters: parameters, success: { (code, holidays) in
-            
             success(code, holidays)
-            
         }) { (error) in
             failure(error)
         }

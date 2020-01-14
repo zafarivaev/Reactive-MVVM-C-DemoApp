@@ -18,24 +18,12 @@ class HolidayDetailCoordinator: BaseCoordinator<Void> {
     }
     
     override func start() -> Observable<Void> {
-        
         let viewController = HolidayDetailViewController()
         viewController.viewModel = viewModel
         
-        bindLifecycle(for: viewController)
-        
         rootViewController.navigationController?
             .pushViewController(viewController, animated: true)
-        
         return Observable.empty()
     }
     
-    func bindLifecycle(for viewController: HolidayDetailViewController) {
-        
-        viewController.rx.viewWillAppear
-            .subscribe(onNext: { _ in
-                viewController.navigationItem.title = "Holiday Detail"
-            })
-            .disposed(by: disposeBag)
-    }
 }

@@ -16,6 +16,7 @@ class HolidayDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNavItem()
         bindViewModel()
     }
 
@@ -167,6 +168,9 @@ extension HolidayDetailViewController {
         
         isHolidayPublicLabel.rightAnchor
             .constraint(equalTo: self.holidayCountryLabel.rightAnchor).isActive = true
-        
+    }
+    
+    func setupNavItem() {
+        self.navigationItem.title = "Holiday Detail"
     }
 }

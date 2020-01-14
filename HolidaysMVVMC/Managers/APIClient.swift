@@ -9,7 +9,6 @@
 import RxSwift
 import RxAlamofire
 import ObjectMapper
-import Combine
 
 class APIClient {
     
@@ -44,9 +43,7 @@ class APIClient {
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (response) in
                 let statusCode = response.response?.statusCode
-                
                 let model = Mapper<T>().map(JSON: response.result.value as! [String : Any])
-                
                 success(statusCode!, model!)
             }, onError: { (error) in
                 failure(error.localizedDescription)

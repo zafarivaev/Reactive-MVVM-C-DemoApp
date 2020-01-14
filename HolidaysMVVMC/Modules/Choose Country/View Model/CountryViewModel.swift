@@ -12,14 +12,9 @@ import RxCocoa
 struct CountryViewModel {
     let code: String
     let name: String
-    let imageURL: String
     
-    init(code: String,
-         name: String,
-         imageURL: String) {
-        
-        self.code = code
-        self.name = name
-        self.imageURL = imageURL
+    init(country: Country) {
+        self.code = country.code!
+        self.name = country.name!
     }
 }

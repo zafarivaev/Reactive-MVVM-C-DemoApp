@@ -25,7 +25,11 @@ class HolidayTableViewCell: UITableViewCell {
         setupUI()
     }
     // MARK: - Properties
-    var viewModel: HolidayViewModel!
+    var viewModel: HolidayViewModel! {
+        didSet {
+            self.configure()
+        }
+    }
     
     lazy var holidayTitleLabel: UILabel = {
         let label = UILabel()
@@ -34,9 +38,9 @@ class HolidayTableViewCell: UITableViewCell {
     
 }
 
-// MARK: - Binding
+// MARK: - Configuration
 extension HolidayTableViewCell {
-    func configure() {
+    private func configure() {
         holidayTitleLabel.text = viewModel.title
     }
 }

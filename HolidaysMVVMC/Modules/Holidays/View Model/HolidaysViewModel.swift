@@ -9,37 +9,34 @@
 import RxSwift
 import RxCocoa
 
-struct HolidaysViewModel {
-    
+class HolidaysViewModel {
     private let disposeBag = DisposeBag()
     
     // MARK: - Actions
     let isLoading = BehaviorSubject<Bool>(value: false)
     let selectedCountry = PublishSubject<String>()
-    let selectedHoliday = PublishSubject<HolidayItem>()
+    let selectedHoliday = PublishSubject<HolidayViewModel>()
     let chooseCountry = PublishSubject<Void>()
     
     // MARK: - Table View Model and Data Source
-    var holidays = BehaviorRelay<[HolidaySection]>(
+    var holidays = BehaviorSubject<[HolidayViewModel]>(
         value: []
     )
-    let dataSource = HolidayDataSource.dataSource()
     
     // MARK: - API Call
     func fetchHolidays(onError: @escaping (String) -> ()) {
         
         self.selectedCountry
-            .subscribe(onNext: { (country) in
+            .subscribe(onNext: { [weak self] (country) in
+                guard let `self` = self else { return }
+                
                 self.isLoading.onNext(true)
-                HolidaysService.shared.getHolidays(country: country, year: "2019", success: { (code, holidays) in
+                HolidaysService.shared.getHolidays(country: country, success: { (code, holidays) in
                     self.isLoading.onNext(false)
                     
-                    let holidayItems = holidays.holidays!.compactMap { HolidayItem(title: $0.name!,
-                                    date: $0.date!,
-                                    country: $0.country!,
-                                    isPublic: $0.public!)
+                    let holidayItems = holidays.holidays!.compactMap { HolidayViewModel(holiday: $0)
                     }
-                    self.holidays.accept([HolidaySection(items: holidayItems)])
+                    self.holidays.onNext(holidayItems)
                     
                 }) { (error) in
                     self.isLoading.onNext(false)

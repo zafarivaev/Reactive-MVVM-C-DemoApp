@@ -22,28 +22,16 @@ class ChooseCountryCoordinator: BaseCoordinator<ChooseCountryCoordinationResult>
     }
     
     override func start() -> Observable<CoordinationResult> {
-        
-        
         let viewController = ChooseCountryViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         
         let viewModel = ChooseCountryViewModel()
         viewController.viewModel = viewModel
         
-//        viewModel.close
-//            .subscribe({ _ in
-//                viewController.dismiss(animated: true, completion: nil)
-//            })
-//            .disposed(by: disposeBag)
-        
-        let country = viewModel.selectedCountry.map { CoordinationResult.country($0)
-        }
-        
-        let cancel = viewModel.close.map { _ in
+        let country = viewModel.selectedCountry.map { CoordinationResult.country($0) }
+        let cancel = viewModel.didClose.map { _ in
             CoordinationResult.cancel
         }
-        
-        bindLifecycle(for: viewController)
         
         rootViewController.present(navigationController, animated: true, completion: nil)
         
@@ -54,12 +42,4 @@ class ChooseCountryCoordinator: BaseCoordinator<ChooseCountryCoordinationResult>
             })
     }
     
-    func bindLifecycle(for viewController: ChooseCountryViewController) {
-        
-        viewController.rx.viewWillAppear
-            .subscribe(onNext: { _ in
-                viewController.navigationItem.title = "Choose Your Country"
-            })
-            .disposed(by: disposeBag)
-    }
 }

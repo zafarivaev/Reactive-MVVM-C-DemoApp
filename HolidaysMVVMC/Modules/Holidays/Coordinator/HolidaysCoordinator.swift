@@ -27,14 +27,7 @@ class HolidaysCoordinator: BaseCoordinator<Void> {
             .subscribe({ [weak self] holidayItem in
                 
                 if let holiday = holidayItem.element {
-                    
-                    let holidayViewModel = HolidayViewModel(
-                        title: holiday.title,
-                        date: holiday.date,
-                        country: holiday.country,
-                        isPublic: holiday.isPublic)
-                    
-                    self?.coordinateToHolidayDetail(with: holidayViewModel)
+                    self?.coordinateToHolidayDetail(with: holiday)
                 }
                 
             })
@@ -50,17 +43,7 @@ class HolidaysCoordinator: BaseCoordinator<Void> {
         .bind(to: viewModel.selectedCountry)
         .disposed(by: disposeBag)
         
-        bindLifeCycle(for: viewController)
-        
         return Observable.never()
-    }
-    
-    private func bindLifeCycle(for viewController: UIViewController) {
-        viewController.rx.viewWillAppear
-            .subscribe({ _ in
-                viewController.navigationItem.title = "Holidays"
-            })
-            .disposed(by: disposeBag)
     }
     
     // MARK: - Coordination

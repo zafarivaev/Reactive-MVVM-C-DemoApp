@@ -9,55 +9,59 @@
 import RxSwift
 import RxCocoa
 
-struct ChooseCountryViewModel {
-    
+final class ChooseCountryViewModel {
     private let disposeBag = DisposeBag()
     
     // MARK: - Actions
+    let didClose = PublishSubject<Void>()
     let selectedCountry = PublishSubject<String>()
-    let close = PublishSubject<Void>()
+    
+    let isLoading = BehaviorSubject<Bool>(value: false)
     let searchText = PublishSubject<String>()
     
     // MARK: - Table View Model & Data Source
-    let fetchedCountries = BehaviorRelay<[CountrySection]>(value: [])
-    let filteredCountries = BehaviorRelay<[CountrySection]>(value: [])
-    
-    let dataSource = CountriesDataSource.dataSource()
+    let fetchedCountries = BehaviorSubject<[CountryViewModel]>(value: [])
+    let filteredCountries = BehaviorSubject<[CountryViewModel]>(value: [])
     
     // MARK: - API Call
-    func fetchCountries(onSuccess: @escaping () -> (),
-                        onError: @escaping (String) -> ()) {
+    func fetchCountries(onError: @escaping (String) -> ()) {
         
-        CountriesService.shared.getCountries(success: { (code, countries) in
+        self.isLoading.onNext(true)
+        CountriesService.shared.getCountries(success: { [weak self] (code, countries) in
+            guard let `self` = self else { return }
             
-            let countryItems = countries.countries!.compactMap { CountryItem(code: $0.code!, name: $0.name!, flag: $0.flag!)
+            self.isLoading.onNext(false)
+            
+            let countryItems = countries.countries!.compactMap {
+                CountryViewModel(country: $0)
             }
-            self.fetchedCountries.accept([CountrySection(items: countryItems)])
-            self.filteredCountries.accept([CountrySection(items: countryItems)])
             
-            self.bindFilter()
-            onSuccess()
+            self.fetchedCountries.onNext(countryItems)
+            self.filteredCountries.onNext(countryItems)
             
-        }) { (error) in
+            self.bindSearchToModel()
+        }) { [weak self] (error) in
+            guard let `self` = self else { return }
+            
+            self.isLoading.onNext(false)
             onError(error)
         }
     }
     
-    func bindFilter() {
-
-        self.searchText.subscribe(onNext: { (text) in
+    func bindSearchToModel() {
+        self.searchText.subscribe(onNext: { [weak self] (text) in
+            guard let `self` = self else { return }
             
-            if !text.isEmpty {
-                let items = self.fetchedCountries.value[0].items.filter {
-                    $0.name.range(of: text,
-                                  options: .caseInsensitive,
-                                  range: nil, locale: nil) != nil
+            switch text.isEmpty {
+            case true:
+                let countries = try! self.fetchedCountries.value().filter {
+                    $0.name.range(of: text, options: .caseInsensitive) != nil
                 }
-                
-                self.filteredCountries.accept([CountrySection(items: items)])
-            } else {
-                self.filteredCountries.accept(self.fetchedCountries.value)
+                self.filteredCountries.onNext(countries)
+            case false:
+                self.filteredCountries.onNext(try! self.fetchedCountries.value())
             }
+           
         })
             .disposed(by: disposeBag)
         
