@@ -64,6 +64,7 @@ class HolidaysViewController: UIViewController {
                                    style: .plain,
                                    target: self,
                                    action: nil)
+        item.tintColor = .systemBlue
         return item
     }()
     

@@ -32,6 +32,11 @@ class ChooseCountryViewController: UIViewController {
         super.viewWillAppear(animated)
         setupNavBar()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.viewModel.didClose.onNext(())
+    }
 
     // MARK: - Properties
     let disposeBag = DisposeBag()
@@ -45,6 +50,7 @@ class ChooseCountryViewController: UIViewController {
     
     lazy var closeItem: UIBarButtonItem = {
         let closeItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: nil)
+        closeItem.tintColor = .systemBlue
         return closeItem
     }()
     

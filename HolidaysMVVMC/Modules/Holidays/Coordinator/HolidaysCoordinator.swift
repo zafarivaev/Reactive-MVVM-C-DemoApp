@@ -24,13 +24,10 @@ class HolidaysCoordinator: ReactiveCoordinator<Void> {
         viewController.viewModel = viewModel
         
         viewModel.selectedHoliday
-            .subscribe({ [weak self] holidayItem in
-                
-                if let holiday = holidayItem.element {
-                    self?.coordinateToHolidayDetail(with: holiday)
-                }
-                
+            .flatMap({ [unowned self] (holidayViewModel) in
+                self.coordinateToHolidayDetail(with: holidayViewModel)
             })
+            .subscribe()
             .disposed(by: disposeBag)
         
         viewModel.chooseCountry
@@ -47,10 +44,11 @@ class HolidaysCoordinator: ReactiveCoordinator<Void> {
     }
     
     // MARK: - Coordination
-    private func coordinateToHolidayDetail(with holidayViewModel: HolidayViewModel) {
+    private func coordinateToHolidayDetail(with holidayViewModel: HolidayViewModel) -> Observable<Void> {
         let holidayDetailCoordinator = HolidayDetailCoordinator(rootViewController: rootViewController)
         holidayDetailCoordinator.viewModel = holidayViewModel
-        coordinate(to: holidayDetailCoordinator)
+        return coordinate(to: holidayDetailCoordinator)
+            .map { _ in () }
     }
     
     private func coordinateToChooseCountry() -> Observable<String?> {

@@ -22,9 +22,13 @@ class HolidayDetailCoordinator: ReactiveCoordinator<Void> {
         let viewController = HolidayDetailViewController()
         viewController.viewModel = viewModel
         
+        let didClose = viewModel.didClose
+        
         rootViewController.navigationController?
             .pushViewController(viewController, animated: true)
-        return Observable.empty()
+        
+        return didClose
+            .take(1)
     }
     
 }

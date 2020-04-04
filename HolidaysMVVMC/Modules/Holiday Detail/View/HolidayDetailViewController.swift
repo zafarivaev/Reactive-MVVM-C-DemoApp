@@ -19,6 +19,11 @@ class HolidayDetailViewController: UIViewController {
         setupNavItem()
         bindViewModel()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.didClose.onNext(())
+    }
 
     // MARK: - Properties
     let disposeBag = DisposeBag()

@@ -6,9 +6,12 @@
 //  Copyright © 2020 Zafar. All rights reserved.
 //
 
-import Foundation
+import RxSwift
 
 struct HolidayViewModel {
+    
+    let didClose = PublishSubject<Void>()
+    
     let title: String
     let date: String
     let country: String
